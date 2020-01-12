@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using Smart_Trix.Models.StViewModel.StPages; //for pageVM
+using Smart_Trix.Models.StViewModel.StPages; //for all StPages model are present here
 using Smart_Trix.Models.StData; //for StData
 
 
@@ -223,5 +221,41 @@ namespace Smart_Trix.Areas.Admin.Controllers
             }
         }
 
+
+        //*********************Edit Sidebar code***********************//
+        [HttpGet]
+        public ActionResult EditSidebar()
+        {
+            //Declare model
+            SidebarVM model;
+            using (SmartDB db=new SmartDB())
+            {
+                //Get the DT
+                StSidebarDT dt = db.Sidebar.Find(1);
+                //Init model
+                model=new SidebarVM(dt);
+
+            }
+            //Return with model
+            return View(model);
+        }
+        [HttpPost]
+        public ActionResult EditSidebar(SidebarVM model)
+        {
+            using (SmartDB db=new SmartDB())
+            {
+                //Get DT
+                StSidebarDT dt = db.Sidebar.Find(1);
+
+                //Dt the body
+                dt.Body = model.Body;
+                //save 
+                db.SaveChanges();
+            }
+            //Set the TemData Message
+            TempData["SM"] = "You have Edit the sidebar successfully!";
+            //Redirect the EditSidebar
+            return RedirectToAction("EditSidebar");
+        }
     }
 }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.ComponentModel.DataAnnotations;
 using Smart_Trix.Models.StData; //StpageDT
+using System.Web.Mvc; //For allow html code 
 
 namespace Smart_Trix.Models.StViewModel.StPages
 {
@@ -30,6 +31,7 @@ namespace Smart_Trix.Models.StViewModel.StPages
         public string Slug { get; set; }
         [Required]
         [StringLength(int.MaxValue, MinimumLength = 3)]
+        [AllowHtml]
         public string Body { get; set; }
         public int Sorting { get; set; }
         public bool HasSidebar { get; set; }
