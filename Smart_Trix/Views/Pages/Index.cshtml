@@ -1,0 +1,9 @@
+﻿@model Smart_Trix.Models.StViewModel.StPages.PageVM
+
+@{
+
+    ViewBag.Title = ViewBag.PageTitle;
+    TempData["PageTitle"] = ViewBag.PageTitle;
+}
+
+@Html.Raw(Model.Body);

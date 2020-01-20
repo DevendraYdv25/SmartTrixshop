@@ -1,7 +1,31 @@
-﻿table.sorting tr:not(.home) {
-    cursor: pointer;
+﻿table.sorting tr:not(.home){
+    cursor:pointer;
+}
+.ui-state-highlight {
+    border: 5px dashed #ff0000;
+}
+span.ajax-text {
+    display: none;
+}
+table.sorting.Categories td {
+    padding: 25px !important;
 }
 
-.ui-state-highlight {
-    border: 1px dashed #ccc;
+.ajaxdivtd {
+    position: absolute;
+}
+
+span.loader {
+    display: none;
+}
+span.ajaxmsg {
+    background: green;
+    color: white;
+    padding: 10px;
+    display: none;
+    position: absolute;
+    bottom: 0;
+}
+.ib{
+    display:inline-block !important;
 }

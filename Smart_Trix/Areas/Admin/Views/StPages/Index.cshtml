@@ -9,7 +9,7 @@
 <p>
     @Html.ActionLink("Add New Page", "AddPage")
 </p>
-@if (!Model.Any())
+@if (! Model.Any())
 {
     <h1 class="text-center">There is no page!</h1>
 }
@@ -44,7 +44,7 @@ else
                 <td>
                     @Html.ActionLink("Edit", "EditPage", new { id = item.Id }) |
                     @Html.ActionLink("Details", "PageDetails", new { id = item.Id }) |
-                    @*Hide the delete option from home*@
+  
                     @if (item.Slug != "home")
                     {
                         @Html.ActionLink("Delete", "DeletePage", new { id = item.Id, }, new { @class = "delete" });
@@ -52,58 +52,40 @@ else
 
                 </td>
             </tr>
-        }
+         }
 
     </table>
 
 }
 
 @section scripts{
-    <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"></script>
-    <script>
+<script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"></script>
+<script>
 
-        $(function () {
-            /*
-             * confirm page deletion
-             */
-            $("a.delete").click(function () {
-                if (!confirm("confirm page seleteion")) {
-                    return false;
-                }
-            });
-            ////////////////////////////////////////////////
+ $(function () {
+    /*
+        * confirm page deletion
+     */
+    $("a.delete").click(function () {
+        if (!confirm("confirm page selection")) {
+            return false;
+        }
+    });
+    ////////////////////////////////////////////////
 
+     $("table#pages tbody").sortable({
+         items: "tr:not(.home)",
+         placeholder: "ui-state-highlight",
+         update: function () {
+             debugger
+             var ids = $("table#pages tbody").sortable("serialize");
+             var url = "/Admin/StPages/ReorderPages";
 
-            /*
-             * Recorder page(sortable jquery code)
-             */
-            $("table#pages tbody").sortable({
-                items: "tr:not(.home)",
-                placeholder: "ui-state-highlight",
-                update: function () {
-                    var ids = $("table#pages tbody").sortable("serialize");
-                    var url = "/Admin/Pages/ReorderPages";
+             $.post(url, ids, function (data) {
 
-                    $.post(url, ids, function (data) {
-                    });
-                }
-            });
-
-
-
-            //$("table#pages tbody").sortable({
-            //    items: "tr:not(.home)",
-            //    placeholder: "ui-state-highlight",
-            //    update: function () {
-            //        var ids = $("table#pages tbody").sortable("serialize");
-            //        //console.log(ids);
-            //        var url = "/Admin/StPages/RecorderPages";
-
-            //        $.post(url, ids, function (data) {
-
-            //        });
-            //    }
-            //});
-        });
+             });
+         }
+     });
+ });
     </script>
 }

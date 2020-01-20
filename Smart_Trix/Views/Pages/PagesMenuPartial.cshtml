@@ -1,0 +1,41 @@
+﻿@model IEnumerable<Smart_Trix.Models.StViewModel.StPages.PageVM>
+
+@{
+    string tempPageTitle = (string)TempData["PageTitle"];
+}
+
+@foreach (var item in Model)
+{
+    if (tempPageTitle == item.Title)
+    {
+        <li class="active"><a href="/@item.Slug">@item.Title</a></li>
+    }
+    else
+    {
+        <li><a href="/@item.Slug">@item.Title</a></li>
+    }
+
+    @*<tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Slug)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Body)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Sorting)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.HasSidebar)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
+                @Html.ActionLink("Details", "Details", new { id=item.Id }) |
+                @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+            </td>
+        </tr>*@
+}
+

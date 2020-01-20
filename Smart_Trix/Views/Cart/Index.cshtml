@@ -1,0 +1,162 @@
+﻿@model IEnumerable<Smart_Trix.Models.StViewModel.StCart.CartVM>
+
+@{
+            ViewBag.Title = "Cart Details";
+}
+
+<h2>Cart Details</h2>
+
+@if (ViewBag.message != null)
+{
+    <h3>@ViewBag.message</h3>
+}
+else
+{
+    <table class="table">
+        <tr>
+            <th>
+                Name
+            </th>
+            <th>
+                Quantity
+            </th>
+            <th>
+                Price
+            </th>
+            <th>
+                Image
+            </th>
+            <th>
+                Total
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProductName)
+                </td>
+                <td class="qty@(item.ProductId)">
+                    @Html.DisplayFor(modelItem => item.Quantity)
+                </td>
+                <td>
+                    RS:@Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    <img src="/Images/Uploads/Products/@item.ProductId/Thumbs/@item.Image"/>
+                </td>
+                <td>
+                    <a href="#" class="incproduct" data-id="@item.ProductId">+</a>
+                    <a href="#" class="decproduct" data-id="@item.ProductId">-</a>
+                    <a href="#" class="removeproduct" data-id="@item.ProductId">Remove</a>
+                </td>
+                <td class="total@(item.ProductId)">
+                    RS:@Html.DisplayFor(modelItem => item.Total)
+                </td>
+
+            </tr>
+         }
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td class="grantotal" ><b>GrandTotal</b>  RS:<span>@ViewBag.GrandTotal</span></td>
+            </tr>
+
+    </table>
+}
+
+@section scripts{
+    <script>
+        $(function () {
+            /*
+             * Increment the product
+             */
+
+
+            $("a.incproduct").click(function (e) {
+                e.preventDefault();
+
+                var productid = $(this).data("id");
+                var url = "/cart/IncrementProduct";
+
+                $.getJSON(url, { productid: productid }, function (data) {
+
+                    $("td.qty" + productid).html(data.qty);
+
+                    var price = data.qty * data.price;
+                    var pricehtml = "RS" + price.toFixed(2);
+
+                    $("td.total" + productid).html(pricehtml);
+
+                    var gt = parseFloat(RS("td.grandtotal span").text());
+                    var grandtotal = (gt + data.price).toFixed(2);
+
+                    $("td.grandtotal span").text(grandtotal);
+                });
+            });
+
+            /*
+            * Increment the product
+            */
+
+
+            $("a.decproduct").click(function (e) {
+                e.preventDefault();
+
+                var $this = $(this);
+                var productid = $(this).data("id");
+                var url = "/cart/DecrementProduct";
+
+                $.getJSON(url, { productid: productid }, function (data) {
+
+                    if (data.qty == 0) {
+                        $this.parent().parent().fadeOut("fast", function () {
+                            location.reload;
+                        });
+                    }
+                    else {
+                        $("td.qty" + productid).html(data.qty);
+
+                        var price = data.qty * data.price;
+                        var pricehtml = "RS" + price.toFixed(2);
+
+                        $("td.total" + productid).html(pricehtml);
+
+                        var gt = parseFloat(RS("td.grandtotal span").text());
+                        var grandtotal = (gt - data.price).toFixed(2);
+
+                        $("td.grandtotal span").text(grandtotal);
+
+                    }
+             
+                });
+            });
+            /*
+           * Increment the product
+           */
+
+
+            $("a.removeproduct").click(function (e) {
+                e.preventDefault();
+
+                var $this = $(this);
+                var productid = $(this).data("id");
+                var url = "/cart/Removeroduct";
+
+                $.get(url, { productid: productid }, function (data) {
+
+                    location.reload();
+                });
+            });
+
+
+        });
+    </script>
+    }

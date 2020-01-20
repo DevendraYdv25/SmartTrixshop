@@ -1,0 +1,97 @@
+﻿@model IEnumerable<Smart_Trix.Models.StViewModel.StShop.ProductVM>
+
+@{
+    ViewBag.Title = "Products";
+}
+@using PagedList.Mvc;
+@using PagedList;
+<h2>Products</h2>
+<select id="SelectCategory" name="SelectCategory">
+    <option value="0">All</option>
+    @foreach (var item in ViewBag.Categories)
+    {
+        if (ViewBag.SelectCat == item.Value)
+        {
+            <option selected="selected" value="@item.Value">@item.Text</option>
+        }
+        else
+        {
+            <option value="@item.Value">@item.Text</option>
+        }
+    }
+</select>
+<br /><br />
+<p>
+    @Html.ActionLink("Add New Products", "AddProduct")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            Name
+        </th>
+        <th>
+            Description
+        </th>
+        <th>
+            Price
+        </th>
+        <th>
+            ImageName
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var product in ViewBag.OnePageOfProducts)
+    {
+        <tr>
+            <td>
+                @product.Name
+            </td>
+            <td>
+                @product.Description
+            </td>
+            <td>
+                @product.Price
+            </td>
+            <td>
+                <a href="/admin/StShop/EditProduct/@product.Id">
+                    <img src="/Images/Uploads/Products/@product.Id/Thumbs/@product.ImageName" />
+                </a>
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "EditProduct", new { id = product.Id }) |
+                @Html.ActionLink("Delete", "DeleteProduct", new { id = product.Id }, new { @class = "delete" })
+
+            </td>
+        </tr>
+    }
+
+</table>
+@Html.PagedListPager((IPagedList)ViewBag.OnePageOfProducts, Page => Url.Action("Products", new { Page, catId = ViewBag.SelectedCat }))
+
+@section scripts{
+    <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"></script>
+    <script>
+        $(function () {
+            /*select the product from specifiy category
+             */
+            $("#SelectCategory").on("change", function () {
+                var url = $(this).val();
+                if (url) {
+                    window.location = "/admin/StShop/Products?catId=" + url;
+                    return false;
+                }
+            });
+            /*
+             * *confirm Product deletion
+             */
+            $("a.delete").click(function () {
+                if (!confirm("confirm page selection")) {
+                    return false;
+                }
+            });
+            ////////////////////////////////////////////////
+        });
+    </script>
+
+}

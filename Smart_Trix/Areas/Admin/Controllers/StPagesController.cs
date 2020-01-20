@@ -5,6 +5,8 @@ using Smart_Trix.Models.StViewModel.StPages; //for all StPages model are present
 using Smart_Trix.Models.StData; //for StData
 
 
+
+
 namespace Smart_Trix.Areas.Admin.Controllers
 {
     public class StPagesController : Controller
@@ -32,6 +34,7 @@ namespace Smart_Trix.Areas.Admin.Controllers
             return View();
         }
         // POST: Admin/StPages/AddPage
+       
         [HttpPost]
         public ActionResult AddPage(PageVM model)
         {
@@ -202,24 +205,32 @@ namespace Smart_Trix.Areas.Admin.Controllers
 
 
         //***********************Recorder dode***********************//
-        public void RecorderPages(int[] id)
+        [HttpPost]
+        public void ReorderPages(int[] id)
         {
-            using (SmartDB db =new SmartDB())
+            using (SmartDB db = new SmartDB())
             {
                 //set the intial count
                 int count = 1; //becase home o place
 
-                //Declare the page Dt
+                //Declare the CategoryDT 
                 StPageDT dt;
+
+                //set the sorting for each category
                 foreach (var pageid in id)
                 {
-                    dt = db.Pages.Find(id);
+                    dt = db.Pages.Find(pageid);
                     dt.Sorting = count;
                     db.SaveChanges();
                     count++;
                 }
             }
         }
+
+
+
+
+
 
 
         //*********************Edit Sidebar code***********************//

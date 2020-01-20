@@ -1,0 +1,9 @@
+﻿@model Smart_Trix.Models.StViewModel.StCart.CartVM
+
+<div class="ajaxcart" style="color:white;">
+    Your cart:@Model.Quantity items(s)-RS:@Model.Price
+    <br />
+    @Html.ActionLink("Checkout","Index")
+</div>
+
+
