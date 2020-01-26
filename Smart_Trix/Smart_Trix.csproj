@@ -137,6 +137,7 @@
     <Compile Include="Areas\Admin\Controllers\DashboardController.cs" />
     <Compile Include="Areas\Admin\Controllers\StPagesController.cs" />
     <Compile Include="Areas\Admin\Controllers\StShopController.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CartController.cs" />
     <Compile Include="Controllers\PagesController.cs" />
     <Compile Include="Controllers\ShopController.cs" />
@@ -145,9 +146,18 @@
     </Compile>
     <Compile Include="Models\StData\SmartDB.cs" />
     <Compile Include="Models\StData\StCategoryDT.cs" />
+    <Compile Include="Models\StData\StOrderDetailDT.cs" />
+    <Compile Include="Models\StData\StOrderDT.cs" />
     <Compile Include="Models\StData\StPageDT.cs" />
     <Compile Include="Models\StData\StProductDT.cs" />
+    <Compile Include="Models\StData\StRoleDT.cs" />
     <Compile Include="Models\StData\StSidebarDT.cs" />
+    <Compile Include="Models\StData\StUselRoleDT.cs" />
+    <Compile Include="Models\StData\StUserDT.cs" />
+    <Compile Include="Models\StViewModel\Account\LogInUserVM.cs" />
+    <Compile Include="Models\StViewModel\Account\UserNavPartialVM.cs" />
+    <Compile Include="Models\StViewModel\Account\UserProfileVM.cs" />
+    <Compile Include="Models\StViewModel\Account\UserVM.cs" />
     <Compile Include="Models\StViewModel\StCart\CartVM.cs" />
     <Compile Include="Models\StViewModel\StPages\PageVM.cs" />
     <Compile Include="Models\StViewModel\StPages\SidebarVM.cs" />
@@ -884,6 +894,11 @@
     <Content Include="Views\Cart\CartPartial.cshtml" />
     <Content Include="Views\Cart\Index.cshtml" />
     <Content Include="Views\Cart\AddToCartPartial.cshtml" />
+    <Content Include="Views\Account\CreateAccount.cshtml" />
+    <Content Include="Views\Account\Login.cshtml" />
+    <Content Include="Views\Account\UserNavPartial.cshtml" />
+    <Content Include="Views\Account\UserProfileEdit.cshtml" />
+    <Content Include="Views\Cart\PayPalPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

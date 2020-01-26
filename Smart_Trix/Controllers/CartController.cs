@@ -3,6 +3,8 @@ using Smart_Trix.Models.StViewModel.StCart;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;//for networkcredential
+using System.Net.Mail;//for mail trap
 using System.Web;
 using System.Web.Mvc;
 
@@ -197,6 +199,77 @@ namespace Smart_Trix.Controllers
                 //remove from the list
                 cart.Remove(model);
             }
+        }
+
+        public ActionResult PayPalPartial()
+        {
+            List<CartVM> cart = Session["cart"] as List<CartVM>;
+            return PartialView(cart);
+        }
+
+        //******************PlaceOrder code*****************//
+        [HttpPost]
+        public void PlaceOrder()
+        {
+            List<CartVM> cart = Session["cart"] as List<CartVM>;
+
+            //Get the username
+            string username = User.Identity.Name;
+
+            int orderid = 0;
+
+            using (SmartDB db=new SmartDB())
+            {
+                //init OrderId
+                StOrderDT dt = new StOrderDT();
+
+                //Get the user Id
+                var s = db.Users.FirstOrDefault(a => a.UserName == username);
+
+                int userId = s.Id;
+
+                //Add to orderDT and save it
+                dt.UserId = userId;
+                dt.CreatedAt = DateTime.Now;
+
+                db.Orders.Add(dt);
+
+                db.SaveChanges();
+
+                //Get the insertId
+                orderid = dt.OrderId;
+
+                //init OrederDetails
+                StOrderDetailDT stOrderDetailDT = new StOrderDetailDT();
+
+                //Add to orderDetailsDT
+                foreach (var item in cart)
+                {
+                    stOrderDetailDT.OrderId = orderid;
+                    stOrderDetailDT.UserId = userId;
+                    stOrderDetailDT.ProductId = item.ProductId;
+                    stOrderDetailDT.Quantity = item.Quantity;
+
+                    //Add DT ans save it
+
+                    db.OrderDetails.Add(stOrderDetailDT);
+                    db.SaveChanges();
+
+
+                }
+            }
+
+
+            // Email admin
+            var client = new SmtpClient("mailtrap.io", 2525)
+            {
+                Credentials = new NetworkCredential("21f57cbb94cf88", "e9d7055c69f02d"),
+                EnableSsl = true
+            };
+            client.Send("devendrayadav7676@gmail.com", "devendrayadav7676@gmail.com", "New Order", "You have a new order. Order number " + orderid);
+
+            // Reset session
+            Session["cart"] = null;
         }
     }
 }
